@@ -1,10 +1,12 @@
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { FormCard } from "./FormCard";
+import { AuthLayout } from "./layout";
 import { Submit } from "./Submit";
 
 export function SignUpForm() {
   return (
+    <AuthLayout>
     <FormCard
       title="회원가입"
       footer={{ label: "이미 계정이 있으신가요?", href: "/login" }}
@@ -41,6 +43,7 @@ export function SignUpForm() {
         </div>
         <Submit className="w-full">가입하기</Submit>
       </form>
-    </FormCard>
+      </FormCard>
+    </AuthLayout>
   );
 }
