@@ -1,25 +1,24 @@
-"use client";
-
-import { useFormValidate } from "@/hooks/useFormValidate";
-import { ChangeEvent, useActionState, useEffect } from "react";
-import toast from "react-hot-toast";
-import { FormCard } from "./FormCard";
-import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { FormMessage } from "./FormMessage";
+import { Label } from "../ui/label";
+import { FormCard } from "./FormCard";
 import { Submit } from "./Submit";
-import { TLoginFormError } from "@/types/form";
-import { LoginSchema } from "@/schemas/auth";
 
-export function LoginForm() {
-  const [error, action] = useActionState(login, undefined);
-
+export function SignUpForm() {
   return (
     <FormCard
-      title="로그인"
-      footer={{ label: "아직 계정이 없으신가요?", href: "/signup" }}
+      title="회원가입"
+      footer={{ label: "이미 계정이 있으신가요?", href: "/login" }}
     >
-      <form action={action} className="space-y-6">
+      <form className="space-y-6">
+        {/* 이름 */}
+        <div className="space-y-1">
+          <Label htmlFor="name">이름</Label>
+          <Input
+            id="name"
+            name="name"
+            placeholder="이름을 입력해주세요"
+          />
+        </div>
         {/* 이메일 */}
         <div className="space-y-1">
           <Label htmlFor="email">이메일</Label>
@@ -28,7 +27,6 @@ export function LoginForm() {
             name="email"
             type="email"
             placeholder="example@example.com"
-            onChange={handleChange}
           />
         </div>
         {/* 비밀번호 */}
@@ -39,10 +37,9 @@ export function LoginForm() {
             name="password"
             type="password"
             placeholder="********"
-            onChange={handleChange}
           />
         </div>
-        <Submit className="w-full">로그인</Submit>
+        <Submit className="w-full">가입하기</Submit>
       </form>
     </FormCard>
   );

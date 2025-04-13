@@ -1,11 +1,13 @@
-import './App.css'
+import Router from '@/routes.tsx'
 
 function App() {
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-500">Hello Tailwind!</h1>
+    <div>
+      {/* 예: 공통 레이아웃 넣기 */}
+      {/* <Header /> */}
+      <Router />
     </div>
   );
 }
 
-export default App
+export default App;
