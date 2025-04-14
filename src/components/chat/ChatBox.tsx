@@ -69,7 +69,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
               <div
                 key={msg.id}
                 className={cn(
-                  "p-3 rounded-xl text-sm max-w-sm",
+                  "p-3 rounded-xl text-sm max-w-sm w-fit break-words whitespace-pre-wrap",
                   msg.sender === "user"
                     ? "bg-blue-100 ml-auto text-right"
                     : "bg-gray-100 mr-auto text-left"
