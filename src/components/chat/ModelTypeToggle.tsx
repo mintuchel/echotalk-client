@@ -16,7 +16,7 @@ const ModelTypeToggle: React.FC<ModelTypeToggleProps> = ({
         LLM Model
       </label>
       <Select value={model} onValueChange={setModel}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[180px] bg-white text-black">
           <SelectValue placeholder="Select a model" />
         </SelectTrigger>
         <SelectContent>
