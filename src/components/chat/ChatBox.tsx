@@ -61,7 +61,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto mt-10 border rounded-2xl shadow-lg">
+    <Card className="w-[800px] mx-auto border rounded-2xl shadow-lg">
       <CardContent className="p-4 space-y-4">
         <ScrollArea className="h-[400px] pr-4">
           <div ref={scrollViewRef} className="space-y-2">
@@ -85,7 +85,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
           <Input
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            onKeyDown={(e) => {
+            onKeyUp={(e) => {
               if (e.key === "Enter") handleSendMessage();
             }}
             placeholder="메시지를 입력하세요"
