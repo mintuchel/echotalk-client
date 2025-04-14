@@ -1,6 +1,7 @@
 import { Users, FileText, Building2, Workflow, FileSearch } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import DateLabels from "@/components/chat/DateLabels";
 
 const menuItems = [
   { label: "직원정보", icon: Users },
@@ -10,7 +11,18 @@ const menuItems = [
   { label: "문서조회", icon: FileSearch},
 ];
 
-export default function Sidebar() {
+interface Message {
+  id: number;
+  text: string;
+  sender: "user" | "bot";
+}
+
+interface SidebarProps {
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+}
+
+export default function Sidebar({ messages, setMessages }: SidebarProps) {
   const [active, setActive] = useState("직원정보");
 
   return (
@@ -32,7 +44,11 @@ export default function Sidebar() {
         {item.label}
       </button>
     ))}
-  </nav>
+      </nav>
+    {/* DateLabels 컴포넌트 추가 */}
+      <div className="mt-6">
+        <DateLabels onDateSelect={setMessages} />
+      </div>
 </aside>
   );
 }

@@ -16,7 +16,7 @@ export function ChatForm() {
 
   return (
     <ChatLayout>
-      <Sidebar></Sidebar>
+      <Sidebar messages={messages} setMessages={setMessages} />
       <Header model={model} setModel={setModel} />
       <ChatBox messages={messages} setMessages={setMessages}/>
     </ChatLayout>

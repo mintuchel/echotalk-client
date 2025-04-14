@@ -43,6 +43,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
     await processUserQuery(inputMessage);
   };
 
+  // fastapi 서버로 쿼리 날림
   const processUserQuery = async (prompt: string) => {
     try {
       const response = await axios.post("http://localhost:8000/chat", { prompt });
