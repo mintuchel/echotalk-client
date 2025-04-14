@@ -1,14 +1,25 @@
+// ChatForm.tsx
+
 import { useState } from "react";
 import { ChatLayout } from "./layout";
-import ModelTypeToggle from "./ModelTypeToggle";
+import Header from "./Header";
+import ChatBox from "./ChatBox";
+
+interface Message {
+  id: number;
+  text: string;
+  sender: "user" | "bot";
+}
 
 export function ChatForm() {
-    const [model, setModel] = useState("openai"); // 초기값은 원하는 걸로!
+  const [model, setModel] = useState("openai");
+  const [messages, setMessages] = useState<Message[]>([]);
 
-    return (
-        <ChatLayout>
-            <ModelTypeToggle model={model} setModel={setModel} />
-            {/* 다른 컴포넌트나 입력 폼 등이 여기에 올 수 있음 */}
-        </ChatLayout>
-    );
+  return (
+    <ChatLayout>
+      <Header model={model} setModel={setModel} />
+      {/* 여기에 다른 컴포넌트 추가 가능 */}
+      <ChatBox messages={messages} setMessages={setMessages}/>
+    </ChatLayout>
+  );
 }
