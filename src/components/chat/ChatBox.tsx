@@ -61,9 +61,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
   };
 
   return (
-    <Card className="w-[45vw] mx-auto border rounded-t-none rounded-bl-2xl rounded-br-2xl shadow-lg">
+    <Card className="w-[45vw] h-[64vh] mx-auto border rounded-t-none rounded-bl-2xl rounded-br-2xl shadow-lg">
       <CardContent className="p-4 space-y-4">
-        <ScrollArea className="h-[400px] pr-4">
+        <ScrollArea className="h-[55vh] pr-4">
           <div ref={scrollViewRef} className="space-y-2">
             {messages.map((msg) => (
               <div
