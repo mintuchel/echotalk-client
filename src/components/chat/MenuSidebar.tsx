@@ -2,6 +2,8 @@ import { Users, FileText, Building2, Workflow, FileSearch } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import DateLabels from "@/components/chat/DateLabels";
+import { Message } from "@/types/message";
+import { Logo } from "./Logo";
 
 const menuItems = [
   { label: "직원정보", icon: Users },
@@ -11,24 +13,19 @@ const menuItems = [
   { label: "문서조회", icon: FileSearch},
 ];
 
-interface Message {
-  id: number;
-  text: string;
-  sender: "user" | "bot";
-}
-
 interface SidebarProps {
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
-export default function Sidebar({ messages, setMessages }: SidebarProps) {
+export default function MenuSidebar({ messages, setMessages }: SidebarProps) {
   const [active, setActive] = useState("직원정보");
 
   return (
     <aside className="h-[70vh] w-[12vw] bg-white border rounded-2xl shadow-lg p-4 mr-4">
-  <div className="flex items-center justify-center text-xl font-bold mb-6 px-2"> 리소스 메뉴</div>
-  <nav className="space-y-2">
+      {/*<div className="flex items-center justify-center text-xl font-bold mb-6 px-2"> 리소스 메뉴</div>*/}
+    <Logo />
+  <nav className="space-y-2 mt-6">
     {menuItems.map((item) => (
       <button
         key={item.label}

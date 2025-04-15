@@ -2,13 +2,9 @@ import { useState } from "react";
 import { ChatLayout } from "@/components/chat/layout";
 import Header from "@/components/chat/Header";
 import ChatBox from "@/components/chat/ChatBox";
-import Sidebar from "@/components/chat/SideBar";
-
-interface Message {
-  id: number;
-  text: string;
-  sender: "user" | "bot";
-}
+import MenuSidebar from "@/components/chat/MenuSidebar";
+import ChatSidebar from "@/components/chat/ChatSidebar";
+import { Message } from "@/types/message";
 
 export function ChatForm() {
   const [model, setModel] = useState("openai");
@@ -16,9 +12,10 @@ export function ChatForm() {
 
   return (
     <ChatLayout>
-      <Sidebar messages={messages} setMessages={setMessages} />
+      <MenuSidebar messages={messages} setMessages={setMessages} />
+      {/*<ChatSidebar/>*/}
       <Header model={model} setModel={setModel} />
-      <ChatBox messages={messages} setMessages={setMessages}/>
+      <ChatBox messages={messages} setMessages={setMessages} />
     </ChatLayout>
   );
 }

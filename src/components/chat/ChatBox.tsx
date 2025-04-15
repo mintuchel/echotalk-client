@@ -5,12 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-
-interface Message {
-  id: number;
-  text: string;
-  sender: "user" | "bot";
-}
+import { Message } from "@/types/message";
 
 interface ChatBoxProps {
     messages: Message[];

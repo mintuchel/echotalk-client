@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
-// 부모 컴포넌트인 App.tsx에게 전달달
+// 부모 컴포넌트인 App.tsx에게 전달
 interface DateLabelsProps {
   onDateSelect: (
     messages: { id: number; text: string; sender: "user" | "bot" }[]
