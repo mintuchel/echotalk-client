@@ -24,7 +24,6 @@ import { Message } from "@/types/message";
 type Props = {
   item: {
     id: string;
-    href: string;
     icon: ReactNode;
     label: string;
   };
@@ -32,7 +31,7 @@ type Props = {
 };
 
 export default function ChatSidebarItem({ item, onClickItem }: Props) {
-  const { id, href, icon, label } = item;
+  const { id, icon, label } = item;
   const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
@@ -117,38 +116,32 @@ export default function ChatSidebarItem({ item, onClickItem }: Props) {
     }
   }, [isEditMode]);
 
-  // ✅ 메시지 가져오기
-  const fetchMessages = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8000/chat/${item.id}`);
-      const history = response.data.history;
+  const fetchMessages = async (date: string) => {
+  const response = await axios.get(`http://localhost:8000/chat/${date}`);
+    console.log(response);
 
-      if (history) {
-        const formattedMessages = history.flatMap(
-          (item: { question: string; answer: string }, index: number) => [
-            { id: index * 2, text: item.question, sender: "user" as const },
-            { id: index * 2 + 1, text: item.answer, sender: "bot" as const },
-          ]
-        );
+    const history = response.data.history;
 
-        onClickItem(formattedMessages);
-      }
-    } catch (error) {
-      console.error("메시지 불러오기 실패:", error);
-    }
-  };
+    console.log(history);
+
+  const formattedMessages = history.flatMap(
+    (item: { question: string; answer: string }, index: number) => [
+      { id: index * 2, text: item.question, sender: "user" },
+      { id: index * 2 + 1, text: item.answer, sender: "bot" },
+    ]
+  );
+
+  onClickItem(formattedMessages);
+};
 
   return (
-    <Link
-  to={href}
-  className={cn(
-    "flex items-center justify-between text-sm p-3 group rounded-lg transition-colors",
-    location.pathname === href
-      ? "bg-zinc-300 text-black font-medium"
-      : "text-zinc-700 hover:bg-zinc-200 hover:text-black"
-  )}
-  onClick={fetchMessages}
->
+    <button
+        className={cn(
+        "w-full text-left flex items-center justify-between text-sm p-3 group rounded-lg transition-colors",
+        "text-zinc-700 hover:bg-zinc-200 hover:text-black"
+        )}
+        onClick={() => fetchMessages(item.id)}
+    >
 
       {/* label 영역 */}
       <div className="flex items-center gap-2">
@@ -192,6 +185,6 @@ export default function ChatSidebarItem({ item, onClickItem }: Props) {
           </DropdownMenuContent>
         </DropdownMenu>
       )}
-    </Link>
+    </button>
   );
 }
