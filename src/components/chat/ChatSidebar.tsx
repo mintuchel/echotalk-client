@@ -2,50 +2,64 @@ import { MessageSquare, Plus } from "lucide-react";
 import { Logo } from "@/components/chat/Logo";
 import ChatSidebarItem from "@/components/chat/ChatSidebarItem";
 import { LogoutButton } from "@/components/chat/LogoutButton";
-import { Message } from "@/types/message";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const DUMMY_ITEMS = [
-  {
-    id: "new",
-    label: "새로운 대화",
-    icon: <Plus />,
-    href: "https://localhost:8000/1",
-  },
-];
-
 // 부모 컴포넌트인 App.tsx에게 전달
 interface ChatSidebarProps {
-  onDateSelect: (
+  onChatSelect: (
     messages: { id: number; text: string; sender: "user" | "bot" }[]
   ) => void;
 }
 
-export default function ChatSidebar({ onDateSelect }: ChatSidebarProps) {
-  const [dates, setDates] = useState<string[]>([]); // 상태로 관리
-  
-  // 처음 렌더링 될 때 한 번만 서버에서 날짜별 conversation 가져오기
-  useEffect(() => {
-    const fetchDates = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/chat/dates");
-        // json 형식에서 dates 추출
-        const dateList = response.data.dates;
-        setDates(dateList);
-      } catch (error) {
-        console.error("Error fetching dates:", error);
-      }
-    };
+export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
+  const [chatIdList, setChatIdList] = useState<string[]>([]); // 상태로 관리
 
-    fetchDates();
+  const fetchChatIds = async () => {
+    try {
+      // cookie에 있는 user_id를 authorization header로 전달
+      const response = await axios.get("http://localhost:8000/chat", {
+        withCredentials: true, // 핵심!
+      });
+
+      const chatList = response.data;
+      const chatIdList = chatList.map((chat: any) => chat.id);
+      setChatIdList(chatIdList);
+    } catch (error) {
+      console.error("Error fetching chat_ids:", error);
+    }
+  };
+  
+  // 처음 렌더링 될 때 한 번만 fetchChatIds를 통해 chat_id 가져오기
+  useEffect(() => {
+    fetchChatIds()
   }, []);
 
-// 클릭하면 서버로부터 과거 대화를 받아 message 배열로 전달
-  const fetchHistory = async (date: string) => {
+  // 새로운 채팅 버튼 클릭하면 동작
+  const handleNewChat = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/chat/${date}`);
+      const response = await axios.get("http://localhost:8000/chats", {
+        withCredentials: true,  // 쿠키를 자동으로 포함시키기 위해 사용
+      });
+
+      console.log("새로운 대화 생성됨:", response.data);
+
+      // 대화 리스트 다시 불러오기
+      await fetchChatIds();
+
+      // 또는 새로 만든 chat에 대해 바로 fetchHistory(response.data.date) 같은 것도 가능
+      onChatSelect([]); // 초기 상태로 리셋 (필요 시 수정 가능)
+
+    } catch (error) {
+      console.error("새 대화 생성 실패:", error);
+    }
+  };
+  
+// 클릭하면 서버로부터 과거 대화를 받아 message 배열로 전달
+  const fetchHistory = async (chat_id: string) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/message/${chat_id}`);
       const history = response.data.history;
 
       if (history) {
@@ -56,7 +70,7 @@ export default function ChatSidebar({ onDateSelect }: ChatSidebarProps) {
           ]
         );
 
-        onDateSelect(formattedMessages);
+        onChatSelect(formattedMessages);
       }
     } catch (error) {
       console.error("Error fetching history:", error);
@@ -66,20 +80,27 @@ export default function ChatSidebar({ onDateSelect }: ChatSidebarProps) {
   return (
     <nav className="h-[70vh] w-[20vw] bg-white border-[3px] rounded-2xl shadow-lg p-4 mr-4 flex flex-col">
       {/* 로고 영역 + 메뉴 아이템 */}
-
-        <Logo />
-        <div className="flex-1 overflow-y-auto mt-4 flex flex-col gap-2 pr-1">
-          {dates.length >= 0 &&
-          dates.map((date, index) => (
+      <Logo />
+      <div className="flex-1 overflow-y-auto mt-4 flex flex-col gap-2 pr-1">
+        {/* 항상 맨 위에 고정되는 새로운 대화 버튼 */}
+        <ChatSidebarItem
+          item={{
+            id: "new",
+            icon: <Plus />,
+            label: "새로운 대화",
+          }}
+          onClickItem={handleNewChat}
+        />
+          {chatIdList.length >= 0 &&
+          chatIdList.map((chatId, index) => (
             <ChatSidebarItem
               key={index}
               item={{
-                id: date,
-                href: `/chat/${date}`, // 링크가 필요 없다면 "#"이나 빈 문자열도 OK
+                id: chatId,
                 icon: <MessageSquare />, // 적당한 아이콘
-                label: date,
+                label: chatId,
               }}
-              onClickItem={() => fetchHistory(date)}
+              onClickItem={() => fetchHistory(chatId)}
             />
           ))}
         </div>

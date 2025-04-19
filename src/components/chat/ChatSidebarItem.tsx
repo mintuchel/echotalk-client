@@ -8,7 +8,7 @@ import {
   useEffect,
 } from "react";
 import axios from "axios";
-import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,9 +32,7 @@ type Props = {
 
 export default function ChatSidebarItem({ item, onClickItem }: Props) {
   const { id, icon, label } = item;
-  const location = useLocation();
   const params = useParams();
-  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [value, setValue] = useState(item.label);

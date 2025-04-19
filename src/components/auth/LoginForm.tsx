@@ -6,7 +6,12 @@ import { AuthLayout } from "./layout";
 import axios from "axios";
 import { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
+
 export function LoginForm() {
+
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -21,7 +26,7 @@ export function LoginForm() {
       });
 
       console.log("로그인 성공:", response.data);
-      // TODO: 성공 시 처리 (예: 토큰 저장, 페이지 이동 등)
+      navigate("/chat");
     } catch (error: any) {
       console.error("로그인 실패:", error.response?.data || error.message);
       // TODO: 에러 처리
