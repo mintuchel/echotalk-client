@@ -8,22 +8,23 @@ import { cn } from "@/lib/utils";
 import { Message } from "@/types/message";
 
 interface ChatBoxProps {
-    messages: Message[];
-    setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  chat_id: string;
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
-    const [inputMessage, setInputMessage] = useState("");
-    const scrollViewRef = useRef<HTMLDivElement>(null);
+const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages, chat_id }) => {
+  const [inputMessage, setInputMessage] = useState("");
+  const scrollViewRef = useRef<HTMLDivElement>(null);
 
-// 자동 스크롤
+  // 자동 스크롤
   useEffect(() => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollTop = scrollViewRef.current.scrollHeight;
     }
   }, [messages]);
     
-      const handleSendMessage = async () => {
+  const handleSendMessage = async () => {
     if (inputMessage.trim() === "") return;
 
     const userQuery: Message = {
@@ -41,7 +42,14 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
   // fastapi 서버로 쿼리 날림
   const processUserQuery = async (prompt: string) => {
     try {
-      const response = await axios.post("http://localhost:8000/chat", { prompt });
+      const response = await axios.post("http://localhost:8000/message",
+        {
+          prompt,
+          chat_id,
+        }, {
+        withCredentials: true,
+      });
+      
       const answer = response.data.response;
 
       const botReply: Message = {

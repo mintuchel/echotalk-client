@@ -9,7 +9,8 @@ import axios from "axios";
 // 부모 컴포넌트인 App.tsx에게 전달
 interface ChatSidebarProps {
   onChatSelect: (
-    messages: { id: number; text: string; sender: "user" | "bot" }[]
+    messages: { id: number; text: string; sender: "user" | "bot" }[],
+    chat_id: string // chat_id도 같이 넘겨줘야 함
   ) => void;
 }
 
@@ -57,7 +58,8 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
     }
   };
   
-// 클릭하면 서버로부터 과거 대화를 받아 message 배열로 전달
+  // 클릭하면 서버로부터 과거 대화를 받아 message 배열로 전달
+  // 부모인 ChatForm에서 관리되는 chat_id 값도 변경
   const fetchChatMessages = async (chat_id: string) => {
     try {
       const response = await axios.get("http://localhost:8000/message", {
@@ -76,7 +78,7 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
           ]
         );
 
-        onChatSelect(formattedMessages);
+        onChatSelect(formattedMessages, chat_id);
       }
     } catch (error) {
       console.error("Error fetching history:", error);
