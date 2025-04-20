@@ -114,15 +114,20 @@ export default function ChatSidebarItem({ item, onClickItem }: Props) {
     }
   }, [isEditMode]);
 
-  const fetchMessages = async (date: string) => {
-  const response = await axios.get(`http://localhost:8000/chat/${date}`);
+  const fetchMessages = async (chat_id: string) => {
+    const response = await axios.get("http://localhost:8000/message", {
+      params: {
+        chat_id: chat_id,
+      }
+    });
+
     console.log(response);
 
-    const history = response.data.history;
+    const messages = response.data.messages;
 
-    console.log(history);
+    console.log(messages);
 
-  const formattedMessages = history.flatMap(
+  const formattedMessages = messages.flatMap(
     (item: { question: string; answer: string }, index: number) => [
       { id: index * 2, text: item.question, sender: "user" },
       { id: index * 2 + 1, text: item.answer, sender: "bot" },

@@ -34,7 +34,7 @@ export function SignUpForm() {
     <AuthLayout>
     <FormCard
       title="회원가입"
-      footer={{ label: "이미 계정이 있으신가요?", href: "/login" }}
+      footer={{ label: "이미 계정이 있으신가요?", href: "auth/login" }}
     >
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* 이름 */}

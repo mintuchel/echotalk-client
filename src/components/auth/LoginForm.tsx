@@ -22,7 +22,9 @@ export function LoginForm() {
     try {
       const response = await axios.post("http://localhost:8000/auth/login", {
         email,
-        password,
+        password
+      }, {
+        withCredentials: true
       });
 
       console.log("로그인 성공:", response.data);
@@ -37,7 +39,7 @@ export function LoginForm() {
     <AuthLayout>
     <FormCard
       title="로그인"
-      footer={{ label: "아직 계정이 없으신가요?", href: "/signup" }}
+      footer={{ label: "아직 계정이 없으신가요?", href: "auth/signup" }}
     >
         <form onSubmit={handleSubmit} className="space-y-6">
         {/* 이메일 */}

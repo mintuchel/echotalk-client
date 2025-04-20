@@ -14,42 +14,43 @@ interface ChatSidebarProps {
 }
 
 export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
-  const [chatIdList, setChatIdList] = useState<string[]>([]); // 상태로 관리
+  const [chatList, setChatList] = useState<string[]>([]); // 상태로 관리
 
-  const fetchChatIds = async () => {
+  const fetchChatList = async () => {
     try {
       // cookie에 있는 user_id를 authorization header로 전달
       const response = await axios.get("http://localhost:8000/chat", {
         withCredentials: true, // 핵심!
       });
 
-      const chatList = response.data;
-      const chatIdList = chatList.map((chat: any) => chat.id);
-      setChatIdList(chatIdList);
+      const chatList = response.data.map((chat: any) => chat.id);
+      setChatList(chatList);
     } catch (error) {
       console.error("Error fetching chat_ids:", error);
     }
   };
   
-  // 처음 렌더링 될 때 한 번만 fetchChatIds를 통해 chat_id 가져오기
+  // 처음 렌더링 될 때 한 번만 fetchChatList를 통해 채팅목록 가져오기
   useEffect(() => {
-    fetchChatIds()
+    fetchChatList()
   }, []);
 
   // 새로운 채팅 버튼 클릭하면 동작
   const handleNewChat = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/chats", {
-        withCredentials: true,  // 쿠키를 자동으로 포함시키기 위해 사용
-      });
+      // cookie에 있는 user_id를 authorization header로 전달
+      const response = await axios.post("http://localhost:8000/chat", {},
+        {
+          withCredentials: true,
+        });
 
       console.log("새로운 대화 생성됨:", response.data);
-
+      const newChatId = response.data.id;
+      
       // 대화 리스트 다시 불러오기
-      await fetchChatIds();
+      await fetchChatList();
 
-      // 또는 새로 만든 chat에 대해 바로 fetchHistory(response.data.date) 같은 것도 가능
-      onChatSelect([]); // 초기 상태로 리셋 (필요 시 수정 가능)
+      fetchChatMessages(newChatId);
 
     } catch (error) {
       console.error("새 대화 생성 실패:", error);
@@ -57,13 +58,18 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
   };
   
 // 클릭하면 서버로부터 과거 대화를 받아 message 배열로 전달
-  const fetchHistory = async (chat_id: string) => {
+  const fetchChatMessages = async (chat_id: string) => {
     try {
-      const response = await axios.get(`http://localhost:8000/message/${chat_id}`);
-      const history = response.data.history;
+      const response = await axios.get("http://localhost:8000/message", {
+        params: {
+          chat_id: chat_id,
+        },
+      });
 
-      if (history) {
-        const formattedMessages = history.flatMap(
+      const messages = response.data.messages
+
+      if (messages) {
+        const formattedMessages = messages.flatMap(
           (item: { question: string; answer: string }, index: number) => [
             { id: index * 2, text: item.question, sender: "user" },
             { id: index * 2 + 1, text: item.answer, sender: "bot" },
@@ -89,10 +95,10 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
             icon: <Plus />,
             label: "새로운 대화",
           }}
-          onClickItem={handleNewChat}
+          onClickItem={() => handleNewChat()}
         />
-          {chatIdList.length >= 0 &&
-          chatIdList.map((chatId, index) => (
+          {chatList.length >= 0 &&
+          chatList.map((chatId, index) => (
             <ChatSidebarItem
               key={index}
               item={{
@@ -100,7 +106,7 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
                 icon: <MessageSquare />, // 적당한 아이콘
                 label: chatId,
               }}
-              onClickItem={() => fetchHistory(chatId)}
+              onClickItem={() => fetchChatMessages(chatId)}
             />
           ))}
         </div>
