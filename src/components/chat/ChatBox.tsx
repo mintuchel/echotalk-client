@@ -27,38 +27,52 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages, chat_id }) => 
   const handleSendMessage = async () => {
     if (inputMessage.trim() === "") return;
 
-    const userQuery: Message = {
-      id: Date.now(),
-      text: inputMessage.trim(),
-      sender: "user",
-    };
+    const userText = inputMessage.trim();
 
-    setMessages((prev) => [...prev, userQuery]);
+    setMessages((prevMessages) => {
+      const lastId = prevMessages.length > 0 ? prevMessages[prevMessages.length - 1].id : 0;
+
+      const userQuery: Message = {
+        id: lastId + 1,
+        text: userText,
+        sender: "user",
+      };
+
+      return [...prevMessages, userQuery];
+    });
+
     setInputMessage("");
 
-    await processUserQuery(inputMessage);
+    await processUserQuery(userText); // userText 따로 넘기기
   };
 
   // fastapi 서버로 쿼리 날림
   const processUserQuery = async (prompt: string) => {
+
+    if (chat_id == "") return;
+
     try {
       const response = await axios.post("http://localhost:8000/message",
         {
           prompt,
           chat_id,
-        }, {
-        withCredentials: true,
+        },
+      );
+
+      const answer = response.data.answer;
+      console.log(answer)
+
+      setMessages((prevMessages) => {
+        const lastId = prevMessages.length > 0 ? prevMessages[prevMessages.length - 1].id : 0;
+
+        const botReply: Message = {
+          id: lastId + 1,
+          text: answer,
+          sender: "bot",
+        };
+
+        return [...prevMessages, botReply];
       });
-      
-      const answer = response.data.response;
-
-      const botReply: Message = {
-        id: Date.now(),
-        text: answer,
-        sender: "bot",
-      };
-
-      setMessages((prev) => [...prev, botReply]);
     } catch (error) {
       console.error("Error fetching bot response:", error);
     }
@@ -74,9 +88,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages, chat_id }) => 
                 key={msg.id}
                 className={cn(
                   "p-3 rounded-xl text-sm max-w-sm w-fit break-words whitespace-pre-wrap",
-                  msg.sender === "user"
-                    ? "bg-blue-100 ml-auto text-right"
-                    : "bg-gray-100 mr-auto text-left"
+                  msg.sender === "user" ? "bg-blue-100 ml-auto text-left" : "bg-gray-100 mr-auto text-left"
                 )}
               >
                 {msg.text}

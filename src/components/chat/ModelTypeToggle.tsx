@@ -11,9 +11,9 @@ const ModelTypeToggle: React.FC<ModelTypeToggleProps> = ({
   setModel,
 }) => {
   return (
-    <div className="flex items-center mr-6">
+    <div className="flex items-center mr-2">
       <label className="mr-2 text-base font-semibold border border-white px-2 py-1 rounded">
-        LLM Model
+        리소스 메뉴
       </label>
       <Select value={model} onValueChange={setModel}>
         <SelectTrigger className="w-[180px] bg-white text-black">

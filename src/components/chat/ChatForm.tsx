@@ -17,7 +17,6 @@ export function ChatForm() {
 
   return (
     <ChatLayout>
-      {/*<MenuSidebar messages={messages} setMessages={setMessages} />*/}
       <ChatSidebar onChatSelect={handleChatSelect} />
       <Header model={model} setModel={setModel} />
       <ChatBox messages={messages} setMessages={setMessages} chat_id={chat_id} />
