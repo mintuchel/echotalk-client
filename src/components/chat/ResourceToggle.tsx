@@ -16,7 +16,7 @@ const menuItems = [
   { label: "문서조회", icon: FileSearch },
 ];
 
-const ModelTypeToggle: React.FC<ModelTypeToggleProps> = ({
+const ResourceToggle: React.FC<ModelTypeToggleProps> = ({
   model,
   setModel,
 }) => {
@@ -47,4 +47,4 @@ const ModelTypeToggle: React.FC<ModelTypeToggleProps> = ({
   );
 };
 
-export default ModelTypeToggle;
+export default ResourceToggle;

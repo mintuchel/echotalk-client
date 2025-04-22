@@ -8,7 +8,6 @@ import {
   useEffect,
 } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,7 +31,7 @@ type Props = {
 
 export default function ChatSidebarItem({ item, onClickItem }: Props) {
   const { id, icon, label } = item;
-  const params = useParams();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [value, setValue] = useState(item.label);
@@ -64,7 +63,15 @@ export default function ChatSidebarItem({ item, onClickItem }: Props) {
     setIsEditMode(false);
     if (value !== label) {
       try {
-        // await updateConversation(id, value);
+        const response = await axios.patch("http://localhost:8000/chat",
+          {
+            id,
+            label,
+          },
+          {
+            withCredentials: true,
+          }
+    );
       } catch (error) {
         console.error(error);
         // toast.error("이름 수정에 실패하였습니다.");
@@ -75,12 +82,13 @@ export default function ChatSidebarItem({ item, onClickItem }: Props) {
   // ✅ 삭제 버튼 클릭 시 모달 띄우기
   const handleDelete = async () => {
     try {
-      // await deleteConversation(id);
-      // toast.success("삭제에 성공했습니다.");
+      const response = await axios.delete(`http://localhost:8000/chat/${id}`, {
+        withCredentials: true, // 쿠키 전달
+      });
 
-      if (params.conversationId === id) {
-        // navigate(BASE_URL);
-      }
+      console.log(response)
+
+      // toast.success("삭제에 성공했습니다.");
 
       closeModal();
     } catch (error) {

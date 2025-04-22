@@ -6,7 +6,7 @@ import ChatSidebar from "@/components/chat/ChatSidebar";
 import { Message } from "@/types/message";
 
 export function ChatForm() {
-  const [model, setModel] = useState("openai");
+  const [model, setModel] = useState("직원정보");
   const[chat_id, setChat] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
 
