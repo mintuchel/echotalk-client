@@ -1,6 +1,6 @@
 export type Chat = {
-  chat_id: string;
-  chat_name: string;
+  id: string;
+  name: string;
 }
 
 export type Message = {

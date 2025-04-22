@@ -1,17 +1,17 @@
 import { Message } from '@/types/models';
 import { ReactNode } from 'react';
 
-export type ChatBoxProps = {
+export type ChatBoxProp = {
   chat_id: string;
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
-export type ChatSidebarProps = {
+export type ChatSidebarProp = {
   onChatSelect: ( chat_id: string, messages: Message[]) => void;
 };
 
-export type SidebarItemProps = {
+export type ChatSidebarItemProp = {
   item: {
     id: string;
     icon: ReactNode;
