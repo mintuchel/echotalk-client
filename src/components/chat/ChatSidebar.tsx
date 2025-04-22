@@ -14,8 +14,13 @@ interface ChatSidebarProps {
   ) => void;
 }
 
+type Chat = {
+  chat_id: string;
+  chat_name: string;
+};
+
 export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
-  const [chatList, setChatList] = useState<string[]>([]); // 상태로 관리
+  const [chatList, setChatList] = useState<Chat[]>([]); // 상태로 관리
 
   const fetchChatList = async () => {
     try {
@@ -24,10 +29,14 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
         withCredentials: true, // 핵심!
       });
 
-      const chatList = response.data.map((chat: any) => chat.id);
+      const chatList = response.data.map((chat: any) => ({
+        chat_id: chat.id,
+        chat_name: chat.name
+      }));
+
       setChatList(chatList);
     } catch (error) {
-      console.error("Error fetching chat_ids:", error);
+      console.error("ChatSideBar.tsx의 fetchChatList에서 터짐", error);
     }
   };
   
@@ -100,15 +109,15 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
           onClickItem={() => handleNewChat()}
         />
           {chatList.length >= 0 &&
-          chatList.map((chatId, index) => (
+          chatList.map((chat, index) => (
             <ChatSidebarItem
               key={index}
               item={{
-                id: chatId,
+                id: chat.chat_id,
                 icon: <MessageSquare />, // 적당한 아이콘
-                label: chatId,
+                label: chat.chat_name,
               }}
-              onClickItem={() => fetchChatMessages(chatId)}
+              onClickItem={() => fetchChatMessages(chat.chat_id)}
             />
           ))}
         </div>

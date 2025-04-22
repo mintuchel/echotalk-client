@@ -19,6 +19,7 @@ import { cn } from "../../lib/utils";
 import { useModalStore } from "../../store/modal";
 import { ModalFooter } from "../modal/ModalFooter";
 import { Message } from "@/types/message";
+import toast from "react-hot-toast"
 
 type Props = {
   item: {
@@ -65,16 +66,19 @@ export default function ChatSidebarItem({ item, onClickItem }: Props) {
       try {
         const response = await axios.patch("http://localhost:8000/chat",
           {
-            id,
-            label,
+            chat_id: id,
+            new_name: value,
           },
           {
             withCredentials: true,
           }
-    );
+        );
+
+        console.log("이름 변경 성공: ", response.data);
+        toast.success("이름이 변경되었습니다.");
       } catch (error) {
         console.error(error);
-        // toast.error("이름 수정에 실패하였습니다.");
+        toast.error("이름 수정에 실패하였습니다.");
       }
     }
   };
@@ -86,14 +90,14 @@ export default function ChatSidebarItem({ item, onClickItem }: Props) {
         withCredentials: true, // 쿠키 전달
       });
 
-      console.log(response)
+      console.log(response);
 
-      // toast.success("삭제에 성공했습니다.");
+      toast.success("삭제에 성공했습니다.");
 
       closeModal();
     } catch (error) {
       console.error(error);
-      // toast.error("삭제에 실패했습니다.");
+      toast.error("삭제에 실패했습니다.");
     }
   };
 

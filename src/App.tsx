@@ -1,5 +1,6 @@
 import Router from '@/routes.tsx'
 import { Modal } from '@/components/modal/Modal';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       {/* <Header /> */}
       <Modal />
       <Router />
+      <Toaster/>
     </div>
   );
 }
