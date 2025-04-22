@@ -5,24 +5,20 @@ import { LogoutButton } from "@/components/chat/LogoutButton";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Chat } from "@/types/models";
-import { ChatSidebarProps } from "@/types/props";
+import { ChatSidebarProp } from "@/types/props";
 
-export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
-  const [chatList, setChatList] = useState<Chat[]>([]); // 상태로 관리
+// 인자로 받는 onChatSelect 함수는 ChatSidebarProp 타입이다
+export default function ChatSidebar({ onChatSelect }: ChatSidebarProp) {
+  const [chatList, setChatList] = useState<Chat[]>([]);
 
   const fetchChatList = async () => {
     try {
-      // cookie에 있는 user_id를 authorization header로 전달
       const response = await axios.get("http://localhost:8000/chat", {
-        withCredentials: true, // 핵심!
+        withCredentials: true,
       });
 
-      const chatList = response.data.map((chat: any) => ({
-        chat_id: chat.id,
-        chat_name: chat.name
-      }));
-
-      setChatList(chatList);
+      // 서버에서 오는 형식이랑 클라이언트에서 사용하는 타입이랑 동일해서 map 없이 바로 가능
+      setChatList(response.data);
     } catch (error) {
       console.error("ChatSideBar.tsx의 fetchChatList에서 터짐", error);
     }
@@ -57,13 +53,11 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
   
   // 클릭하면 서버로부터 과거 대화를 받아 message 배열로 전달
   // 부모인 ChatForm에서 관리되는 chat_id 값도 변경
-  const fetchChatMessages = async (chat_id: string) => {
+  const fetchChatMessages = async (id: string) => {
     try {
-      const response = await axios.get("http://localhost:8000/message", {
-        params: {
-          chat_id: chat_id,
-        },
-      });
+      const response = await axios.get(`http://localhost:8000/chat/${id}`, {
+        withCredentials: true,
+    });
 
       const messages = response.data.messages
 
@@ -75,7 +69,7 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
           ]
         );
 
-        onChatSelect(chat_id, formattedMessages);
+        onChatSelect(id, formattedMessages);
       }
     } catch (error) {
       console.error("Error fetching history:", error);
@@ -101,11 +95,11 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
             <ChatSidebarItem
               key={index}
               item={{
-                id: chat.chat_id,
+                id: chat.id,
                 icon: <MessageSquare />, // 적당한 아이콘
-                label: chat.chat_name,
+                label: chat.name,
               }}
-              onClickItem={() => fetchChatMessages(chat.chat_id)}
+              onClickItem={() => fetchChatMessages(chat.id)}
             />
           ))}
         </div>

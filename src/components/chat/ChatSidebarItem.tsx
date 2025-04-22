@@ -1,14 +1,15 @@
-import { ChangeEvent, MouseEvent, ReactNode, useState, KeyboardEvent, useRef, useEffect } from "react";
+import { ChangeEvent, MouseEvent, useState, KeyboardEvent, useRef, useEffect } from "react";
 import axios from "axios";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Ellipsis, Pencil, Trash } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useModalStore } from "../../store/modal";
 import { ModalFooter } from "../modal/ModalFooter";
-import { SidebarItemProps } from "@/types/props";
+import { ChatSidebarItemProp } from "@/types/props";
 import toast from "react-hot-toast"
 
-export default function ChatSidebarItem({ item, onClickItem }: SidebarItemProps) {
+// 인자로 받는 {item, onClickItem} 구조체는 ChatSidebarItemProp 타입이다
+export default function ChatSidebarItem({ item, onClickItem }: ChatSidebarItemProp) {
   const { id, icon, label } = item;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,7 +45,7 @@ export default function ChatSidebarItem({ item, onClickItem }: SidebarItemProps)
       try {
         const response = await axios.patch("http://localhost:8000/chat",
           {
-            chat_id: id,
+            id: id,
             new_name: value,
           },
           {
@@ -55,7 +56,7 @@ export default function ChatSidebarItem({ item, onClickItem }: SidebarItemProps)
         console.log("이름 변경 성공: ", response.data);
         toast.success("이름이 변경되었습니다.");
       } catch (error) {
-        console.error(error);
+        console.error("이름 수정 실패 :",error);
         toast.error("이름 수정에 실패하였습니다.");
       }
     }
@@ -70,11 +71,11 @@ export default function ChatSidebarItem({ item, onClickItem }: SidebarItemProps)
 
       console.log(response);
 
-      toast.success("삭제에 성공했습니다.");
+      toast.success("채팅 삭제 성공");
 
       closeModal();
     } catch (error) {
-      console.error(error);
+      console.error("채팅 삭제 실패: ", error);
       toast.error("삭제에 실패했습니다.");
     }
   };
@@ -104,28 +105,23 @@ export default function ChatSidebarItem({ item, onClickItem }: SidebarItemProps)
     }
   }, [isEditMode]);
 
-  const fetchMessages = async (chat_id: string) => {
-    const response = await axios.get("http://localhost:8000/message", {
-      params: {
-        chat_id: chat_id,
-      }
+  const fetchMessages = async (id: string) => {
+    const response = await axios.get(`http://localhost:8000/chat/${id}`, {
+        withCredentials: true,
     });
 
-    console.log(response);
-
     const messages = response.data.messages;
-
     console.log(messages);
 
-  const formattedMessages = messages.flatMap(
-    (item: { question: string; answer: string }, index: number) => [
-      { id: index * 2, text: item.question, sender: "user" },
-      { id: index * 2 + 1, text: item.answer, sender: "bot" },
-    ]
-  );
-
-  onClickItem(formattedMessages);
-};
+    const formattedMessages = messages.flatMap(
+      (item: { question: string; answer: string }, index: number) => [
+        { id: index * 2, text: item.question, sender: "user" },
+        { id: index * 2 + 1, text: item.answer, sender: "bot" },
+      ]
+    );
+    
+    onClickItem(formattedMessages);
+  };
 
   return (
     <button

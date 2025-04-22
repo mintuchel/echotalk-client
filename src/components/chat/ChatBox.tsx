@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -6,9 +6,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Message } from "@/types/models";
-import { ChatBoxProps } from "@/types/props";
+import { ChatBoxProp } from "@/types/props";
 
-const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages, chat_id }) => {
+// 인자로 받는 {messages, setMessages, chat_id}는 ChatBoxProp 타입이다
+export default function ChatBox({ messages, setMessages, chat_id }: ChatBoxProp) {
+  
   const [inputMessage, setInputMessage] = useState("");
   const scrollViewRef = useRef<HTMLDivElement>(null);
 
@@ -107,5 +109,3 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages, chat_id }) => 
     </Card>
   );
 };
-
-export default ChatBox;
