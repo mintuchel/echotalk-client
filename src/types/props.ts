@@ -8,7 +8,7 @@ export type ChatBoxProp = {
 }
 
 export type ChatSidebarProp = {
-  onChatSelect: ( chat_id: string, messages: Message[]) => void;
+  onChatSelect: (chat_id: string, messages: Message[]) => void;
 };
 
 export type ChatSidebarItemProp = {
@@ -17,5 +17,5 @@ export type ChatSidebarItemProp = {
     icon: ReactNode;
     label: string;
   };
-  onClickItem: (messages: Message[]) => void;
+  onClickItem: (id: string) => void;
 }

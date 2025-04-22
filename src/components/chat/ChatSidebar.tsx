@@ -3,22 +3,19 @@ import { Logo } from "@/components/chat/Logo";
 import ChatSidebarItem from "@/components/chat/ChatSidebarItem";
 import { LogoutButton } from "@/components/chat/LogoutButton";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Chat } from "@/types/models";
 import { ChatSidebarProp } from "@/types/props";
+import { getChatList, createChat, getChatMessages } from "@/apis/chat";
 
-// 인자로 받는 onChatSelect 함수는 ChatSidebarProp 타입이다
+// 인자로 받는 onChatSelect 함수는 ChatSidebarProp 타입이다 (왜냐구? ChatSidebarProp에 멤버로 저 함수밖에 없거든...)
 export default function ChatSidebar({ onChatSelect }: ChatSidebarProp) {
   const [chatList, setChatList] = useState<Chat[]>([]);
 
   const fetchChatList = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/chat", {
-        withCredentials: true,
-      });
-
-      // 서버에서 오는 형식이랑 클라이언트에서 사용하는 타입이랑 동일해서 map 없이 바로 가능
-      setChatList(response.data);
+      // 서버에서 오는 형식이랑 클라이언트에서 사용하는 타입이랑 동일해서 map 없이 바로 받아도 됨
+      const chatList = await getChatList();
+      setChatList(chatList);
     } catch (error) {
       console.error("ChatSideBar.tsx의 fetchChatList에서 터짐", error);
     }
@@ -32,20 +29,10 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProp) {
   // 새로운 채팅 버튼 클릭하면 동작
   const handleNewChat = async () => {
     try {
-      // cookie에 있는 user_id를 authorization header로 전달
-      const response = await axios.post("http://localhost:8000/chat", {},
-        {
-          withCredentials: true,
-        });
-
-      console.log("새로운 대화 생성됨:", response.data);
-      const newChatId = response.data.id;
-      
-      // 대화 리스트 다시 불러오기
+      const { id } = await createChat();
       await fetchChatList();
-
-      fetchChatMessages(newChatId);
-
+      fetchChatMessages(id);
+      console.log("새 대화 생성됨: id", id);
     } catch (error) {
       console.error("새 대화 생성 실패:", error);
     }
@@ -55,12 +42,7 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProp) {
   // 부모인 ChatForm에서 관리되는 chat_id 값도 변경
   const fetchChatMessages = async (id: string) => {
     try {
-      const response = await axios.get(`http://localhost:8000/chat/${id}`, {
-        withCredentials: true,
-    });
-
-      const messages = response.data.messages
-
+      const messages = await getChatMessages(id);
       if (messages) {
         const formattedMessages = messages.flatMap(
           (item: { question: string; answer: string }, index: number) => [
@@ -99,7 +81,7 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProp) {
                 icon: <MessageSquare />, // 적당한 아이콘
                 label: chat.name,
               }}
-              onClickItem={() => fetchChatMessages(chat.id)}
+              onClickItem={fetchChatMessages}
             />
           ))}
         </div>

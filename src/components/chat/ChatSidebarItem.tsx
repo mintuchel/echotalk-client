@@ -105,31 +105,13 @@ export default function ChatSidebarItem({ item, onClickItem }: ChatSidebarItemPr
     }
   }, [isEditMode]);
 
-  const fetchMessages = async (id: string) => {
-    const response = await axios.get(`http://localhost:8000/chat/${id}`, {
-        withCredentials: true,
-    });
-
-    const messages = response.data.messages;
-    console.log(messages);
-
-    const formattedMessages = messages.flatMap(
-      (item: { question: string; answer: string }, index: number) => [
-        { id: index * 2, text: item.question, sender: "user" },
-        { id: index * 2 + 1, text: item.answer, sender: "bot" },
-      ]
-    );
-    
-    onClickItem(formattedMessages);
-  };
-
   return (
     <button
       className={cn(
         "w-full text-left flex items-center justify-between text-sm p-3 group rounded-lg transition-colors",
         "text-zinc-700 hover:bg-zinc-200 hover:text-black"
       )}
-      onClick={() => fetchMessages(item.id)}
+      onClick={() => onClickItem(item.id)}
     >
       {/* label 영역 */}
       <div className="flex items-center gap-2">
