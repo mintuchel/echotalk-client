@@ -4,7 +4,7 @@ import { FormCard } from "./FormCard";
 import { AuthLayout } from "./layout";
 import { Submit } from "./Submit";
 import { useState } from "react";
-import axios from "axios";
+import { signup } from "@/apis/auth";
 
 export function SignUpForm() {
 
@@ -16,12 +16,7 @@ export function SignUpForm() {
     e.preventDefault(); // 페이지 리로드 방지
 
     try {
-      const response = await axios.post("http://localhost:8000/auth/signup", {
-        name,
-        email,
-        password,
-      });
-
+      const response = await signup(name, email, password);
       console.log("회원가입 성공:", response.data);
       // TODO: 회원가입 성공 후 처리 (예: 로그인 페이지로 리다이렉트, 사용자 안내 메시지 등)
     } catch (error: any) {
