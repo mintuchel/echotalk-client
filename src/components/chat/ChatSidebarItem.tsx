@@ -1,5 +1,4 @@
 import { ChangeEvent, MouseEvent, useState, KeyboardEvent, useRef, useEffect } from "react";
-import axios from "axios";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Ellipsis, Pencil, Trash } from "lucide-react";
 import { cn } from "../../lib/utils";
@@ -7,6 +6,7 @@ import { useModalStore } from "../../store/modal";
 import { ModalFooter } from "../modal/ModalFooter";
 import { ChatSidebarItemProp } from "@/types/props";
 import toast from "react-hot-toast"
+import { updateChatName, deleteChat } from "@/apis/chat";
 
 // 인자로 받는 {item, onClickItem} 구조체는 ChatSidebarItemProp 타입이다
 export default function ChatSidebarItem({ item, onClickItem }: ChatSidebarItemProp) {
@@ -14,6 +14,7 @@ export default function ChatSidebarItem({ item, onClickItem }: ChatSidebarItemPr
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  
   const [value, setValue] = useState(item.label);
 
   const openModal = useModalStore((state) => state.openModal);
@@ -43,15 +44,7 @@ export default function ChatSidebarItem({ item, onClickItem }: ChatSidebarItemPr
     setIsEditMode(false);
     if (value !== label) {
       try {
-        const response = await axios.patch("http://localhost:8000/chat",
-          {
-            id: id,
-            new_name: value,
-          },
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await updateChatName(id, value);
 
         console.log("이름 변경 성공: ", response.data);
         toast.success("이름이 변경되었습니다.");
@@ -65,9 +58,7 @@ export default function ChatSidebarItem({ item, onClickItem }: ChatSidebarItemPr
   // ✅ 삭제 버튼 클릭 시 모달 띄우기
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8000/chat/${id}`, {
-        withCredentials: true,
-      });
+      const response = await deleteChat(id);
 
       console.log(response);
 

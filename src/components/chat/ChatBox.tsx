@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Message } from "@/types/models";
 import { ChatBoxProp } from "@/types/props";
+import { sendMessageToBot } from "@/apis/message";
 
 // 인자로 받는 {messages, setMessages, chat_id}는 ChatBoxProp 타입이다
 export default function ChatBox({ messages, setMessages, chat_id }: ChatBoxProp) {
@@ -49,22 +49,16 @@ export default function ChatBox({ messages, setMessages, chat_id }: ChatBoxProp)
     if (chat_id == "") return;
 
     try {
-      const response = await axios.post("http://localhost:8000/message",
-        {
-          prompt,
-          chat_id,
-        },
-      );
+      const response = await sendMessageToBot(chat_id, prompt);
 
-      const answer = response.data.answer;
-      console.log(answer)
+      console.log(response)
 
       setMessages((prevMessages) => {
         const lastId = prevMessages.length > 0 ? prevMessages[prevMessages.length - 1].id : 0;
 
         const botReply: Message = {
           id: lastId + 1,
-          text: answer,
+          text: response,
           sender: "bot",
         };
 
