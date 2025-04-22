@@ -3,14 +3,14 @@ import { ChatLayout } from "@/components/chat/layout";
 import Header from "@/components/chat/Header";
 import ChatBox from "@/components/chat/ChatBox";
 import ChatSidebar from "@/components/chat/ChatSidebar";
-import { Message } from "@/types/message";
+import { Message } from "@/types/models";
 
 export function ChatForm() {
   const [model, setModel] = useState("직원정보");
   const[chat_id, setChat] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const handleChatSelect = (newMessages: Message[], selectedChatId: string) => {
+  const handleChatSelect = (selectedChatId: string, newMessages: Message[]) => {
     setMessages(newMessages);
     setChat(selectedChatId);
   };

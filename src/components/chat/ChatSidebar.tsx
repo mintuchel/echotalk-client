@@ -2,22 +2,10 @@ import { MessageSquare, Plus } from "lucide-react";
 import { Logo } from "@/components/chat/Logo";
 import ChatSidebarItem from "@/components/chat/ChatSidebarItem";
 import { LogoutButton } from "@/components/chat/LogoutButton";
-
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-// 부모 컴포넌트인 App.tsx에게 전달
-interface ChatSidebarProps {
-  onChatSelect: (
-    messages: { id: number; text: string; sender: "user" | "bot" }[],
-    chat_id: string // chat_id도 같이 넘겨줘야 함
-  ) => void;
-}
-
-type Chat = {
-  chat_id: string;
-  chat_name: string;
-};
+import { Chat } from "@/types/models";
+import { ChatSidebarProps } from "@/types/props";
 
 export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
   const [chatList, setChatList] = useState<Chat[]>([]); // 상태로 관리
@@ -87,7 +75,7 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProps) {
           ]
         );
 
-        onChatSelect(formattedMessages, chat_id);
+        onChatSelect(chat_id, formattedMessages);
       }
     } catch (error) {
       console.error("Error fetching history:", error);

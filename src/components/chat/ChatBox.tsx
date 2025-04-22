@@ -5,13 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { Message } from "@/types/message";
-
-interface ChatBoxProps {
-  messages: Message[];
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
-  chat_id: string;
-}
+import { Message } from "@/types/models";
+import { ChatBoxProps } from "@/types/props";
 
 const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages, chat_id }) => {
   const [inputMessage, setInputMessage] = useState("");

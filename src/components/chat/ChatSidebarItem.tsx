@@ -1,36 +1,14 @@
-import {
-  ChangeEvent,
-  MouseEvent,
-  ReactNode,
-  useState,
-  KeyboardEvent,
-  useRef,
-  useEffect,
-} from "react";
+import { ChangeEvent, MouseEvent, ReactNode, useState, KeyboardEvent, useRef, useEffect } from "react";
 import axios from "axios";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Ellipsis, Pencil, Trash } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useModalStore } from "../../store/modal";
 import { ModalFooter } from "../modal/ModalFooter";
-import { Message } from "@/types/message";
+import { SidebarItemProps } from "@/types/props";
 import toast from "react-hot-toast"
 
-type Props = {
-  item: {
-    id: string;
-    icon: ReactNode;
-    label: string;
-  };
-  onClickItem: (messages: Message[]) => void;
-};
-
-export default function ChatSidebarItem({ item, onClickItem }: Props) {
+export default function ChatSidebarItem({ item, onClickItem }: SidebarItemProps) {
   const { id, icon, label } = item;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -87,7 +65,7 @@ export default function ChatSidebarItem({ item, onClickItem }: Props) {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(`http://localhost:8000/chat/${id}`, {
-        withCredentials: true, // 쿠키 전달
+        withCredentials: true,
       });
 
       console.log(response);
@@ -151,13 +129,12 @@ export default function ChatSidebarItem({ item, onClickItem }: Props) {
 
   return (
     <button
-        className={cn(
+      className={cn(
         "w-full text-left flex items-center justify-between text-sm p-3 group rounded-lg transition-colors",
         "text-zinc-700 hover:bg-zinc-200 hover:text-black"
-        )}
-        onClick={() => fetchMessages(item.id)}
+      )}
+      onClick={() => fetchMessages(item.id)}
     >
-
       {/* label 영역 */}
       <div className="flex items-center gap-2">
         {icon}{" "}
