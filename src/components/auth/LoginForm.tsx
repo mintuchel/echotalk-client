@@ -15,15 +15,16 @@ export function LoginForm() {
   const [password, setPassword] = useState("")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // 폼 제출 시 자동 새로고침을 막아줌
+    // 자동 새로고침이 되면 아래 signup 비동기 함수로 인자값들이 제대로 안넘어갈 수 있음
     e.preventDefault();
 
     try {
       const response = await login(email, password);
       console.log("로그인 성공:", response.data);
       navigate("/chat");
-    } catch (error: any) {
-      console.error("로그인 실패:", error.response?.data || error.message);
-      // TODO: 에러 처리
+    } catch (error) {
+      console.error("로그인 실패:", error);
     }
   };
 

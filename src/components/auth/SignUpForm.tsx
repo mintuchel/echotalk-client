@@ -5,23 +5,27 @@ import { AuthLayout } from "./layout";
 import { Submit } from "./Submit";
 import { useState } from "react";
 import { signup } from "@/apis/auth";
+import { useNavigate } from "react-router-dom";
 
 export function SignUpForm() {
-
+  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // 페이지 리로드 방지
+    // 폼 제출 시 자동 새로고침을 막아줌
+    // 자동 새로고침이 되면 아래 signup 비동기 함수로 인자값들이 제대로 안넘어갈 수 있음
+    e.preventDefault();
 
     try {
       const response = await signup(name, email, password);
       console.log("회원가입 성공:", response.data);
-      // TODO: 회원가입 성공 후 처리 (예: 로그인 페이지로 리다이렉트, 사용자 안내 메시지 등)
-    } catch (error: any) {
-      console.error("회원가입 실패:", error.response?.data || error.message);
-      // TODO: 에러 처리 (예: 사용자에게 에러 메시지 표시)
+      navigate("/");
+    } catch (error) {
+      console.error("회원가입 실패:", error);
     }
   };
 

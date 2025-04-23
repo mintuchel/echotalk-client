@@ -9,7 +9,7 @@ import toast from "react-hot-toast"
 import { updateChatName, deleteChat } from "@/apis/chat";
 
 // 인자로 받는 {item, onClickItem} 구조체는 ChatSidebarItemProp 타입이다
-export default function ChatSidebarItem({ item, onClickItem }: ChatSidebarItemProp) {
+export default function ChatSidebarItem({ item, onClickItem, onDeleteSuccess, onEditSuccess }: ChatSidebarItemProp) {
   const { id, icon, label } = item;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,6 +46,8 @@ export default function ChatSidebarItem({ item, onClickItem }: ChatSidebarItemPr
       try {
         const response = await updateChatName(id, value);
 
+        onEditSuccess?.();
+
         console.log("이름 변경 성공: ", response.data);
         toast.success("이름이 변경되었습니다.");
       } catch (error) {
@@ -59,6 +61,9 @@ export default function ChatSidebarItem({ item, onClickItem }: ChatSidebarItemPr
   const handleDelete = async () => {
     try {
       const response = await deleteChat(id);
+
+      // 삭제 후 chatList를 새로 고침
+      onDeleteSuccess?.();
 
       console.log(response);
 

@@ -21,7 +21,7 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProp) {
     }
   };
   
-  // 처음 렌더링 될 때 한 번만 fetchChatList를 통해 채팅목록 가져오기
+  // 처음 렌더링 될 때 1번만 fetchChatList를 통해 채팅목록 가져오기
   useEffect(() => {
     fetchChatList()
   }, []);
@@ -82,6 +82,8 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProp) {
                 label: chat.name,
               }}
               onClickItem={fetchChatMessages}
+              onDeleteSuccess={fetchChatList}
+              onEditSuccess={fetchChatList}
             />
           ))}
         </div>

@@ -10,10 +10,15 @@ export function ChatForm() {
   const[chat_id, setChat] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const handleChatSelect = (selectedChatId: string, newMessages: Message[]) => {
-    setMessages(newMessages);
+  // const handleChatSelect = (selectedChatId: string, newMessages: Message[]) => {
+  //   setMessages(newMessages);
+  //   setChat(selectedChatId);
+  // };
+
+  function handleChatSelect(selectedChatId: string, newMessages: Message[]) {
     setChat(selectedChatId);
-  };
+    setMessages(newMessages);
+  }
 
   return (
     <ChatLayout>
