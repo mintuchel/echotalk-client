@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const login = async (email: string, password: string) => {
+export const login = async (email: string, password: string) : Promise<any>=> {
   const response = await axios.post("http://localhost:8000/auth/login",
     { email, password },
     { withCredentials: true }
@@ -9,7 +9,7 @@ export const login = async (email: string, password: string) => {
   return response.data;
 };
 
-export const signup = async (name: string, email: string, password: string) => {
+export const signup = async (name: string, email: string, password: string) : Promise<any> => {
   const response = await axios.post("http://localhost:8000/auth/signup", {
     name,
     email,

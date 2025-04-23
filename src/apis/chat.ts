@@ -3,6 +3,7 @@ import { Chat } from "@/types/models";
 
 export const createChat = async (): Promise<{ id: string }> => {
   const response = await axios.post("http://localhost:8000/chat",
+    {},
     { withCredentials: true, }
   );
   return response.data;
