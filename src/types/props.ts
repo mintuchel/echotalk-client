@@ -13,6 +13,10 @@ export type ChatSidebarProp = {
   onChatSelect: (chat_id: string, messages: Message[]) => void;
 };
 
+export type AddChatButtonProp = {
+  onClick: () => void;
+}
+
 export type ChatSidebarItemProp = {
   item: {
     id: string;
@@ -21,6 +25,6 @@ export type ChatSidebarItemProp = {
   };
   onClickItem: (id: string) => void;
   // 새 채팅 버튼은 이게 없어도 되므로 선택적 prop 추가 방식으로 선언
-  onDeleteSuccess?: () => void;
-  onEditSuccess?: () => void;
+  onDeleteSuccess: () => void;
+  onEditSuccess: () => void;
 }

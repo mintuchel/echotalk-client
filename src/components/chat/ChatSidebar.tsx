@@ -2,6 +2,7 @@ import { MessageSquare, Plus } from "lucide-react";
 import { Logo } from "@/components/chat/Logo";
 import ChatSidebarItem from "@/components/chat/ChatSidebarItem";
 import { LogoutButton } from "@/components/chat/LogoutButton";
+import AddChatButton from "@/components/chat/AddChatButton";
 import { useEffect, useState } from "react";
 import { Chat } from "@/types/models";
 import { ChatSidebarProp } from "@/types/props";
@@ -64,34 +65,29 @@ export default function ChatSidebar({ onChatSelect }: ChatSidebarProp) {
       <Logo />
       <div className="flex-1 overflow-y-auto mt-4 flex flex-col gap-2 pr-1">
         {/* 항상 맨 위에 고정되는 새로운 대화 버튼 */}
-        <ChatSidebarItem
-          item={{
-            id: "new",
-            icon: <Plus />,
-            label: "새로운 대화",
-          }}
-          onClickItem={() => handleNewChat()}
-        />
-          {chatList.length >= 0 &&
-          chatList.map((chat, index) => (
-            <ChatSidebarItem
-              key={index}
-              item={{
-                id: chat.id,
-                icon: <MessageSquare />, // 적당한 아이콘
-                label: chat.name,
-              }}
-              onClickItem={fetchChatMessages}
-              onDeleteSuccess={fetchChatList}
-              onEditSuccess={fetchChatList}
-            />
-          ))}
-        </div>
+        <AddChatButton onClick={handleNewChat} />
+        
+        {/* 유저의 대화내역 보여주기 */}
+        {chatList.length >= 0 && chatList.map((chat, index) => (
+          <ChatSidebarItem
+            key={index}
+            item={{
+              id: chat.id,
+              icon: <MessageSquare />, // 적당한 아이콘
+              label: chat.name,
+            }}
+            onClickItem={fetchChatMessages}
+            onDeleteSuccess={fetchChatList}
+            onEditSuccess={fetchChatList}
+          />
+        ))}
+      </div>
 
       {/* 로그아웃 버튼 영역 */}
       <div className="flex justify-center pt-4">
         <LogoutButton />
       </div>
+
     </nav>
   );
 }

@@ -46,7 +46,7 @@ export default function ChatSidebarItem({ item, onClickItem, onDeleteSuccess, on
       try {
         const response = await updateChatName(id, value);
 
-        onEditSuccess?.();
+        onEditSuccess();
 
         console.log("이름 변경 성공: ", response.data);
         toast.success("이름이 변경되었습니다.");
@@ -63,7 +63,7 @@ export default function ChatSidebarItem({ item, onClickItem, onDeleteSuccess, on
       const response = await deleteChat(id);
 
       // 삭제 후 chatList를 새로 고침
-      onDeleteSuccess?.();
+      onDeleteSuccess();
 
       console.log(response);
 
