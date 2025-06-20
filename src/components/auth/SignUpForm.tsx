@@ -53,7 +53,7 @@ export function SignUpForm() {
             id="email"
             name="email"
             type="email"
-            placeholder="example@example.com"
+            placeholder="example@echoit.co.kr"
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
