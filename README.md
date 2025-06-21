@@ -1,12 +1,12 @@
 <br>
 
 <div align="center">
-  <table style="margin-bottom: 0px;">
-    <tr>
-      <td><img src="src/assets/logo.png" alt="Logo" width="50" style="margin-bottom: 20px;" /></td>
-      <td><h1 style="font-size: 55px; font-weight: bold; margin: 0px;">EchoTalk</h1></td>
-    </tr>
-  </table>
+   <table style="border-collapse: collapse; border: none;">
+      <tr>
+         <td><img src="src/assets/logo.png" width="50" style="margin-bottom: 20px; cursor: default;" /></td>
+         <td><h1 style="font-size: 55px; font-weight: bold; margin: 0px;">EchoTalk</h1></td>
+      </tr>
+   </table>
   <h3>Private Local Chatbot Service for Enterprises</h3>
   <p>정보유출 걱정없는 기업 맞춤형 Private LLM</p>
 </div>
@@ -54,8 +54,7 @@
 해당 프로젝트를 로컬에서 실행하려면 우선 레포지토리를 클론해주세요.
 
 ```sh
-git clone
-https://github.com/mintuchel/echotalk.git
+git clone https://github.com/mintuchel/echotalk.git
 ```
 
 ### Frontend
