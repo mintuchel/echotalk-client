@@ -1,12 +1,10 @@
 <br>
 
 <div align="center">
-   <table style="border-collapse: collapse; border: none;">
-      <tr>
-         <td><img src="src/assets/logo.png" width="50" style="margin-bottom: 20px; cursor: default;" /></td>
-         <td><h1 style="font-size: 55px; font-weight: bold; margin: 0px;">EchoTalk</h1></td>
-      </tr>
-   </table>
+   <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+      <img src="src/assets/logo.png" alt="Logo" width="50" style="cursor: default; margin-bottom: 20px" />
+      <h1 style="font-size: 55px; font-weight: bold; margin: 0;">EchoTalk</h1>
+   </div>
   <h3>Private Local Chatbot Service for Enterprises</h3>
   <p>정보유출 걱정없는 기업 맞춤형 Private LLM</p>
 </div>
