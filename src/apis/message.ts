@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const sendMessageToBot = async (id: string, question: string) => {
+export const sendMessageToBot = async (chat_id: string, question: string) => {
     const response = await axios.post("http://localhost:8000/message",
         {
-            id,
+            chat_id,
             question
         },
     );
