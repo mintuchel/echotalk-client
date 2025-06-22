@@ -5,7 +5,7 @@
       <img src="src/assets/logo.png" alt="Logo" width="50" style="cursor: default; margin-bottom: 20px" />
       <h1 style="font-size: 55px; font-weight: bold; margin: 0;">EchoTalk</h1>
    </div>
-  <h3>Private Local Chatbot Service for Enterprises</h3>
+  <p>Private Local Chatbot Service for Enterprises</p>
   <p>정보유출 걱정없는 기업 맞춤형 Private LLM</p>
 </div>
 
@@ -121,19 +121,15 @@ cd echotalk-client
 
 ### 1. 로그인
 
-![LoginPage](https://github.com/user-attachments/assets/4e89b0bd-9aae-42af-b339-7faffaee00b4)
-
-현재 로그인은 쿠키-세션 방식으로 구현되어있습니다.
+![LoginPage](./public/login.png)
 
 ### 2. 회원가입
 
-![SignUpPage](https://github.com/user-attachments/assets/24dbb599-f118-46a7-b0ae-06023eadf7ff)
-
-제한된 사내 환경에서의 사용을 전제로 하여, @echoit.co.kr 도메인을 가진 이메일 계정만 회원가입 및 로그인이 가능하도록 설정하였습니다.
+![SignUpPage](./public/signup.png)
 
 ### 3. 일반 채팅
 
-![Chat1](https://github.com/user-attachments/assets/aecac642-f33f-492e-8970-0f8dc0a4c20d)
+![Chat1](./public/chat1.png)
 
 사내 정보와 직접적인 관련이 없는 일반적인 질문에 대해서는 OpenAI API를 통해 응답을 생성합니다.
 
@@ -141,19 +137,19 @@ cd echotalk-client
 
 4번부터 6번까지의 기능은 Pinecone이라는 VectorDB의 메타데이터 필터링 기능을 활용하여 특정 주제(리소스 메뉴)의 문서만 추출하고, 그중 유사도가 높은 **상위 5개의 문서를 질문과 함께** OpenAI에 전달해 질문의 의도와 맥락을 반영한 응답을 생성합니다.
 
-![Chat2](https://github.com/user-attachments/assets/38c9fedb-4d87-4b3f-9a92-5728f44e30c9)
+![Chat2](./public/chat2.png)
 
 리소스 메뉴에서 “직원 정보”를 선택하면, Pinecone의 메타데이터 필터링을 통해 "employee" 태그가 포함된 문서만 대상으로 유사도 검색을 수행합니다. 사용자의 질문을 벡터로 임베딩한 후, 해당 주제의 문서 중 코사인 유사도가 높은 벡터를 추출하고 이를 OpenAI에 전달하여 질문의 의도와 맥락을 고려한 응답을 생성합니다.
 
 ### 5. 직원/부서 정보 관련 채팅
 
-![Chat3](https://github.com/user-attachments/assets/cdc52e61-33cc-44de-829d-54b675b796b5)
+![Chat3](./public/chat3.png)
 
 리소스 메뉴에서 “직원 정보”를 선택한 경우, 직원 정보 관련된 문서들만 우선적으로 조회하여 답변을 제공합니다.
 
 ### 6. 규정 정보 관련 채팅
 
-![Chat4](https://github.com/user-attachments/assets/0eb0e79d-8848-4c44-be32-39250be7ca95)
+![Chat4](./public/chat4.png)
 
 리소스 메뉴에서 “규정 정보”를 선택한 경우, 규정 정보 관련된 문서들만 우선적으로 조회하여 답변을 제공합니다.
 조회된 문서들의 유사도가 임계 유사도보다 낮을 경우 문서 조회 범위를 넓히거나, OpenAI에게 직접 질문하여 답변을 가져옵니다.
