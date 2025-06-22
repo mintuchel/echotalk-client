@@ -2,8 +2,8 @@
 
 <div align="center">
    <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-      <img src="src/assets/logo.png" alt="Logo" width="50" style="cursor: default; margin-bottom: 20px" />
-      <h1 style="font-size: 55px; font-weight: bold; margin: 0;">EchoTalk</h1>
+      <img src="src/assets/logo.png" alt="Logo" width="50" style="cursor: default; margin-bottom: 6px" />
+      <p style="font-size: 55px; font-weight: bold; margin: 0;">EchoTalk</p>
    </div>
   <p>Private Local Chatbot Service for Enterprises</p>
   <p>정보유출 걱정없는 기업 맞춤형 Private LLM</p>
