@@ -1,12 +1,12 @@
 <br>
 
 <div align="center">
-   <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-      <img src="src/assets/logo.png" alt="Logo" width="50" style="cursor: default; margin-bottom: 20px" />
-      <p align="center"><b style="font-size: 55px; font-weight: bold; margin: 0;">EchoTalk</b></p>
-   </div>
-  <p>Private Local Chatbot Service for Enterprises</p>
-  <p>정보유출 걱정없는 기업 맞춤형 Private LLM</p>
+   <p align="center">
+      <img src="src/assets/logo.png" alt="Logo" width="50" style="vertical-align: middle;" />
+      <span style="font-weight: bold; font-size: 55px; font-weight: bold; margin: 0; vertical-align: middle;">EchoTalk</span>
+   </p>
+   <p>Private Local Chatbot Service for Enterprises</p>
+   <p>정보유출 걱정없는 기업 맞춤형 Private LLM</p>
 </div>
 
 ## 프로젝트 소개
