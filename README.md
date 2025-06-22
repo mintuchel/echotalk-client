@@ -1,10 +1,7 @@
 <br>
 
 <div align="center">
-   <p align="center">
-      <img src="src/assets/logo.png" alt="Logo" width="50" style="vertical-align: middle;" />
-      <span style="font-weight: bold; font-size: 55px; font-weight: bold; margin: 0; vertical-align: middle;">EchoTalk</span>
-   </p>
+   <img src="./public/title.png" alt="Logo" width="350"/>
    <p>Private Local Chatbot Service for Enterprises</p>
    <p>정보유출 걱정없는 기업 맞춤형 Private LLM</p>
 </div>
