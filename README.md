@@ -2,9 +2,8 @@
 
 <div align="center">
    <img src="./public/title.png" alt="Logo" width="350"/>
-   <p>Private Local Chatbot Service for Enterprises</p>
-   <p>정보유출 걱정없는 기업 맞춤형 Private LLM</p>
 </div>
+<h3 align="center">RAG 기반 사내 로컬 챗봇 서비스</h3>
 
 ## 프로젝트 소개
 
